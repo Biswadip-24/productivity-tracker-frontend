@@ -1,64 +1,124 @@
 package com.example.productivitytracker;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.productivitytracker.databinding.FragmentHomeBinding;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    FragmentHomeBinding binding;
+    BarChart barChart;
+    BarData barData;
+    BarDataSet barDataSet;
+    ArrayList barEntries;
+    final ArrayList<String> weekDaysLabel = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        barChart = binding.weeklyBarChart;
+        populateChart();
+        return binding.getRoot();
+    }
+
+    private void populateChart(){
+
+        getEntries();
+        setWeeklyXAxisLabel();
+
+        barDataSet = new BarDataSet(barEntries, "");
+        barData = new BarData(barDataSet);
+        barChart.setData(barData);
+        styleBarChart();
+
+    }
+
+    private void getEntries() {
+        barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(1, 2));
+        barEntries.add(new BarEntry(2, 1));
+        barEntries.add(new BarEntry(3, 1));
+        barEntries.add(new BarEntry(4, 3));
+        barEntries.add(new BarEntry(5, 4));
+        barEntries.add(new BarEntry(6, 3));
+        barEntries.add(new BarEntry(7, 1));
+    }
+
+    private void setWeeklyXAxisLabel(){
+        weekDaysLabel.add("M");
+        weekDaysLabel.add("T");
+        weekDaysLabel.add("W");
+        weekDaysLabel.add("T");
+        weekDaysLabel.add("F");
+        weekDaysLabel.add("S");
+        weekDaysLabel.add("S");
+
+
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setValueFormatter(xAxisFormatter);
+    }
+
+    private void styleBarChart()
+    {
+        Description description = new Description();
+        description.setText("");
+
+        barChart.setDescription(description);    // Hide the description
+        barChart.getAxisLeft().setDrawLabels(false);
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.getLegend().setEnabled(false);   // Hide the legend
+        barChart.setExtraOffsets(0,0,0,16);
+
+        barDataSet.setDrawValues(false);
+        barDataSet.setColor(ContextCompat.getColor(getContext(), R.color.bar_graph_color));
+        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setValueTextSize(18f);
+
+        barData.setBarWidth(0.5f);
+    }
+
+    public class DayAxisValueFormatter extends ValueFormatter {
+        private final BarLineChartBase<?> chart;
+        public DayAxisValueFormatter(BarLineChartBase<?> chart) {
+            this.chart = chart;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+            return weekDaysLabel.get((int) value - 1);
+        }
     }
 }
