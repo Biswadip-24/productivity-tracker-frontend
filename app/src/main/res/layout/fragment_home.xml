@@ -41,7 +41,8 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/insights" />
+                android:background="@drawable/insights"
+                android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/user_icon"
@@ -49,6 +50,7 @@
                 android:layout_height="36dp"
                 android:scaleType="centerInside"
                 app:shapeAppearanceOverlay="@style/circleImageView"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/user_avatar" />
 
         </LinearLayout>
@@ -141,7 +143,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16sp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -174,13 +178,11 @@
 
         </LinearLayout>
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/event_item"/>
 
     </LinearLayout>
 
