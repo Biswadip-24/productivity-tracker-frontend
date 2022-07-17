@@ -1,5 +1,6 @@
 package com.example.productivitytracker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -46,7 +47,13 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         barChart = binding.weeklyBarChart;
         populateChart();
+        setListeners();
         return binding.getRoot();
+    }
+
+    private void setListeners(){
+        binding.userIcon.setOnClickListener(v -> openProfileActivity());
+        binding.btRecommendations.setOnClickListener(v -> openRecommendationsActivity());
     }
 
     private void populateChart(){
@@ -61,18 +68,20 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void getEntries() {
+    private void getEntries()
+    {
+        // These are all just test data. Later we fetch all these data from API call
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, 2));
-        barEntries.add(new BarEntry(2, 1));
-        barEntries.add(new BarEntry(3, 1));
-        barEntries.add(new BarEntry(4, 3));
-        barEntries.add(new BarEntry(5, 4));
-        barEntries.add(new BarEntry(6, 3));
-        barEntries.add(new BarEntry(7, 1));
+        barEntries.add(new BarEntry(1, 20));
+        barEntries.add(new BarEntry(2, 23));
+        barEntries.add(new BarEntry(3, 75));
+        barEntries.add(new BarEntry(4, 67));
+        barEntries.add(new BarEntry(5, 40));
+        barEntries.add(new BarEntry(6, 50));
+        barEntries.add(new BarEntry(7, 25));
     }
 
-    private void setWeeklyXAxisLabel(){
+    private void setWeeklyXAxisLabel() {
         weekDaysLabel.add("M");
         weekDaysLabel.add("T");
         weekDaysLabel.add("W");
@@ -98,14 +107,15 @@ public class HomeFragment extends Fragment {
         description.setText("");
 
         barChart.setDescription(description);    // Hide the description
-        barChart.getAxisLeft().setDrawLabels(false);
+        //barChart.getAxisLeft().setDrawLabels(false);
         barChart.getAxisRight().setDrawLabels(false);
         barChart.getLegend().setEnabled(false);   // Hide the legend
-        barChart.setExtraOffsets(0,0,0,16);
+        barChart.setExtraOffsets(8,0,0,16);
 
         barDataSet.setDrawValues(false);
         barDataSet.setColor(ContextCompat.getColor(getContext(), R.color.bar_graph_color));
         barDataSet.setValueTextColor(Color.WHITE);
+        barChart.getAxisLeft().setTextColor(Color.WHITE);
         barDataSet.setValueTextSize(18f);
 
         barData.setBarWidth(0.5f);
@@ -120,5 +130,15 @@ public class HomeFragment extends Fragment {
         public String getFormattedValue(float value) {
             return weekDaysLabel.get((int) value - 1);
         }
+    }
+
+    private void openProfileActivity(){
+        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void openRecommendationsActivity(){
+        Intent intent = new Intent(getActivity(), RecommendationsActivity.class);
+        startActivity(intent);
     }
 }
