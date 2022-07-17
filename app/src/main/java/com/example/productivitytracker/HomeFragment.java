@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
     private void setListeners(){
         binding.userIcon.setOnClickListener(v -> openProfileActivity());
         binding.btRecommendations.setOnClickListener(v -> openRecommendationsActivity());
+        binding.moreDetails.setOnClickListener(v -> openMetricsActivity());
     }
 
     private void populateChart(){
@@ -139,6 +140,11 @@ public class HomeFragment extends Fragment {
 
     private void openRecommendationsActivity(){
         Intent intent = new Intent(getActivity(), RecommendationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openMetricsActivity(){
+        Intent intent = new Intent(getActivity(), MetricsActivity.class);
         startActivity(intent);
     }
 }
