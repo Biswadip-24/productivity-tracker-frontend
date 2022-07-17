@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_launcher" />
@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Screen Time"
-                android:textColor="@color/white"
                 android:textSize="24sp" />
 
             <ProgressBar

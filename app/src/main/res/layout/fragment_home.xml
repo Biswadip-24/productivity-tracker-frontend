@@ -65,7 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Today"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/white"
             android:textSize="20sp"/>
@@ -79,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
+                android:backgroundTint="#3AB0FF"
                 android:elevation="5dp"
                 app:cardCornerRadius="10dp">
 
@@ -93,14 +96,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Productive Hours"
-                        android:fontFamily="@font/poppins"/>
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8.5"
                         android:textSize="36sp"
-                        android:fontFamily="@font/poppins_bold"/>
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -110,6 +115,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:backgroundTint="#6CC4A1"
                 android:elevation="5dp"
                 app:cardCornerRadius="10dp">
 
@@ -124,14 +130,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Productivity Score"
-                        android:fontFamily="@font/poppins"/>
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="41.6"
                         android:textSize="36sp"
-                        android:fontFamily="@font/poppins_bold"/>
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
