@@ -6,13 +6,16 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.productivitytracker.adapters.ActivityListAdapter;
 import com.example.productivitytracker.databinding.FragmentHomeBinding;
+import com.example.productivitytracker.models.Activity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.AxisBase;
@@ -33,8 +36,9 @@ public class HomeFragment extends Fragment {
     BarChart barChart;
     BarData barData;
     BarDataSet barDataSet;
-    ArrayList barEntries;
+    ArrayList<BarEntry> barEntries;
     final ArrayList<String> weekDaysLabel = new ArrayList<>();
+    ArrayList<Activity> userActivities = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         barChart = binding.weeklyBarChart;
         populateChart();
+        getUserActivities();
         setListeners();
         return binding.getRoot();
     }
@@ -66,7 +71,12 @@ public class HomeFragment extends Fragment {
         barData = new BarData(barDataSet);
         barChart.setData(barData);
         styleBarChart();
+    }
 
+    private void getUserActivities(){
+        setSampleUserActivities();
+        ActivityListAdapter adapter = new ActivityListAdapter(userActivities);
+        binding.rvActivities.setAdapter(adapter);
     }
 
     private void getEntries()
@@ -80,6 +90,13 @@ public class HomeFragment extends Fragment {
         barEntries.add(new BarEntry(5, 40));
         barEntries.add(new BarEntry(6, 50));
         barEntries.add(new BarEntry(7, 25));
+    }
+
+    private void setSampleUserActivities(){
+        userActivities.add(new Activity("Gym","", 3.1f,25));
+        userActivities.add(new Activity("Screen Time","", 2.2f,20));
+        userActivities.add(new Activity("Study","", 3,25));
+        userActivities.add(new Activity("Meetings","", 2.3f,23));
     }
 
     private void setWeeklyXAxisLabel() {
