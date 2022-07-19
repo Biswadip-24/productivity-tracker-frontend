@@ -3,5 +3,6 @@
 
     <string name="home">Home</string>
     <string name="users">Users</string>
+    <string name="timeline"><u>Your Timeline</u></string>
 
 </resources>

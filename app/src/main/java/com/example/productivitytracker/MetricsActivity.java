@@ -3,11 +3,14 @@ package com.example.productivitytracker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.example.productivitytracker.adapters.TimeLineAdapter;
 import com.example.productivitytracker.databinding.ActivityMetricsBinding;
+import com.example.productivitytracker.models.TimeLineModel;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -17,10 +20,12 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MetricsActivity extends AppCompatActivity {
 
     ActivityMetricsBinding binding;
+    RecyclerView rvTimeLine;
     PieChart pieChart;
 
     @Override
@@ -31,9 +36,11 @@ public class MetricsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         pieChart = binding.pieChart;
+        rvTimeLine = binding.timelineRecyclerView;
 
         setupPieChart();
         loadPieChartData();
+        populateTimeLine();
     }
 
     private void setupPieChart()
@@ -83,5 +90,30 @@ public class MetricsActivity extends AppCompatActivity {
         pieChart.setData(data);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
+    }
+
+    private void populateTimeLine(){
+        String[] name = {"Study", "Gym", "Screen Time", "Meetings", "Event 5"};
+        String[] status = {"active", "inactive", "inactive", "inactive", "inactive"};
+        String[] description = {"Preparing for upcoming Test on Monday","Working out in gym","Entertainment time spent on phone", "Attended couple of meetings to catch up with the project progress.", "Description 5"};
+        String[] time = {"11:00 PM", "10:03 AM", "10:03 PM", " 1:15 PM", " 2:10 PM"};
+
+        List<TimeLineModel> timeLineModelList;
+        TimeLineModel[] timeLineModel;
+
+        timeLineModelList = new ArrayList<>();
+        int size = name.length;
+        timeLineModel = new TimeLineModel[size];
+
+        for (int i = 0; i < size; i++) {
+            timeLineModel[i] = new TimeLineModel();
+            timeLineModel[i].setName(name[i]);
+            timeLineModel[i].setStatus(status[i]);
+            timeLineModel[i].setDescription(description[i]);
+            timeLineModel[i].setTime(time[i]);
+            timeLineModelList.add(timeLineModel[i]);
+        }
+
+        rvTimeLine.setAdapter(new TimeLineAdapter(rvTimeLine.getContext(), timeLineModelList));
     }
 }
