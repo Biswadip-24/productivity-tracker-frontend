@@ -3,7 +3,9 @@ package com.example.productivitytracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,10 +18,17 @@ import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
     private EditText UserName;
+    private EditText Age;
+    private EditText Email;
     private Spinner hoursSpinner;
     private Spinner hoursSpinner2;
     private Spinner hoursSpinner3;
     private Spinner hoursSpinner4;
+    private static final String KEY = "Name";
+    private static final String KEY_MAIL = "Email";
+    private static final String KEY_AGE = "Age";
+
+    private SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,17 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(UserProfileActivity.this, MainActivity.class));
             }
         });
+
+        UserName = (EditText) findViewById(R.id.userName);
+        Email = (EditText) findViewById(R.id.email_address);
+        Age = (EditText) findViewById(R.id.age);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        UserName.setText(prefs.getString(KEY,""));
+        Email.setText(prefs.getString(KEY_MAIL,""));
+        Age.setText(prefs.getString(KEY_AGE,""));
+
         hoursSpinner = findViewById(R.id.hours_spinner);
         hoursSpinner2 = findViewById(R.id.hours_spinner2);
         hoursSpinner3= findViewById(R.id.hours_spinner3);
@@ -46,24 +66,14 @@ public class UserProfileActivity extends AppCompatActivity {
         hoursSpinner2.setAdapter(hoursAdapter);
         hoursSpinner3.setAdapter(hoursAdapter);
         hoursSpinner4.setAdapter(hoursAdapter);
-//        hoursSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//               @Override
-//               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//               }
-//
-//               @Override
-//               public void onNothingSelected(AdapterView<?> parent) {
-//
-//               }
-//           }
-//        );
 
     }
 
     public void saveChanges(View v) {
-        UserName = (EditText)findViewById(R.id.userName);
-        String newName = UserName.getText().toString();
-        UserName.setText(newName);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY,UserName.getText().toString());
+        editor.putString(KEY_MAIL,Email.getText().toString());
+        editor.putString(KEY_AGE,Age.getText().toString());
+        editor.commit();
         Toast.makeText(UserProfileActivity.this, "Changes made successfully.", Toast.LENGTH_SHORT).show();
     }}
