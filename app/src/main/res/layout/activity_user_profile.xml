@@ -4,15 +4,286 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     tools:context=".UserProfileActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile Page"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:background="#2D9DF6"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/close_button"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            tools:ignore="ImageContrastCheck,RedundantDescriptionCheck" />
+
+        <TextView
+            android:id="@+id/Account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:fitsSystemWindows="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:foregroundGravity="bottom|center_vertical|center_horizontal"
+            android:padding="10dp"
+            android:text="@string/account_settings"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#5D4037"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/space3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/profilePicture"-->
+    <!--        android:layout_width="100dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:contextClickable="true"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout"-->
+    <!--        app:srcCompat="@drawable/user_avatar"-->
+    <!--        tools:srcCompat="@tools:sample/avatars" />-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="681dp"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="50dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="30dp"
+                android:baselineAlignBottom="false"
+                android:src="@drawable/user_avatar"
+                app:civ_border_color="#807B7B"
+                app:civ_border_width="4dp"
+                app:civ_shadow="true"
+
+                app:civ_shadow_color="@color/blue"
+                app:civ_shadow_radius="2dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <EditText
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#EFEFEF"
+                android:backgroundTintMode="src_in"
+                android:clickable="false"
+                android:ems="10"
+                android:hint="@string/user_name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/email_address"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <EditText
+                android:id="@+id/Age"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/age"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/set_goals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:height="40dp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center_horizontal"
+                android:text="@string/set_goals"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="2"
+                    android:height="36dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="bottom"
+                    android:text="@string/sleep_hours"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/hours_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="wrap_content"
+                    android:minHeight="40dp"
+                    android:padding="5dp"
+                    android:textAlignment="textEnd"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <!--                    android:textAlignment="textEnd"-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/w_s_hours"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="2"
+                    android:height="36dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="bottom"
+                    android:text="@string/work_study_hours"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/hours_spinner2"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="wrap_content"
+                    android:minHeight="40dp"
+                    android:padding="5dp"
+                    android:textAlignment="textEnd"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/s_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="2"
+                    android:height="36dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="bottom"
+                    android:text="@string/screen_time"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/hours_spinner3"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="wrap_content"
+                    android:minHeight="40dp"
+                    android:padding="5dp"
+                    android:textAlignment="textEnd"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/workout_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="2"
+                    android:height="36dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="bottom"
+                    android:text="@string/workout_hours"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/hours_spinner4"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="wrap_content"
+                    android:minHeight="40dp"
+                    android:padding="5dp"
+                    android:textAlignment="textEnd"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#2D9DF6"
+                android:onClick="saveChanges"
+                android:text="@string/save"
+                android:textColor="#FFFFFF"
+                tools:ignore="TextContrastCheck" />
+
+            <Button
+                android:id="@+id/log_out"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="#2D9DF6"
+                android:text="@string/log_out"
+                android:textColor="@color/white"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

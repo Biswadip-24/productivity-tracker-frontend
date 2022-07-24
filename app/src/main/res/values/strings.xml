@@ -4,5 +4,17 @@
     <string name="home">Home</string>
     <string name="users">Users</string>
     <string name="timeline"><u>Your Timeline</u></string>
+    <string name="close_button">Close button</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="user_name">User Name</string>
+    <string name="age">Age</string>
+    <string name="email">Email</string>
+    <string name="save">Save</string>
+    <string name="log_out">Log Out</string>
+    <string name="set_goals">SET GOALS</string>
+    <string name="sleep_hours">Sleep Hours</string>
+    <string name="work_study_hours">Work/ Study Hours</string>
+    <string name="screen_time">Screen Time</string>
+    <string name="workout_hours">Workout Hours</string>
 
 </resources>
