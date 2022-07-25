@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.productivitytracker.adapters.TimeLineAdapter;
 import com.example.productivitytracker.databinding.ActivityMetricsBinding;
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class MetricsActivity extends AppCompatActivity {
 
     ActivityMetricsBinding binding;
     RecyclerView rvTimeLine;
+    FloatingActionButton addEvent;
     PieChart pieChart;
 
     @Override
@@ -37,10 +40,22 @@ public class MetricsActivity extends AppCompatActivity {
 
         pieChart = binding.pieChart;
         rvTimeLine = binding.timelineRecyclerView;
+        addEvent = binding.fab;
 
+        addListeners();
         setupPieChart();
         loadPieChartData();
         populateTimeLine();
+    }
+
+    private void addListeners(){
+        addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddEventFragment addEventFragment = new AddEventFragment();
+                addEventFragment.show(getSupportFragmentManager(), addEventFragment.getTag());
+            }
+        });
     }
 
     private void setupPieChart()

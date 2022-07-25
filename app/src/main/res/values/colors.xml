@@ -17,4 +17,6 @@
     <color name="bar_graph_color">#76BA99</color>
     <color name="blue">#3AB0FF</color>
     <color name="green">#5FD068</color>
+
+    <color name="gray">#808080</color>
 </resources>
