@@ -35,7 +35,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         closeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(UserProfileActivity.this, MainActivity.class));
+                setResult(RESULT_OK);
+                finish();
             }
         });
 

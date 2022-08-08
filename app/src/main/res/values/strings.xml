@@ -2,7 +2,8 @@
     <string name="app_name">Productivity Tracker</string>
 
     <string name="home">Home</string>
-    <string name="users">Users</string>
+    <string name="feed">Feed</string>
+    <string name="recommendations">Recommendations</string>
     <string name="timeline"><u>Your Timeline</u></string>
     <string name="close_button">Close button</string>
     <string name="account_settings">Account Settings</string>
@@ -23,4 +24,6 @@
     <string name="startTime">Start Time</string>
     <string name="endTime">End Time</string>
 
+    <string name="samplePostText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="sampleRecommendations">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 </resources>

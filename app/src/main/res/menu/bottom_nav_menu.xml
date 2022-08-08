@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_baseline_home_24" />
 
     <item
-        android:title="@string/users"
+        android:title="@string/feed"
         android:id="@+id/users"
         android:icon="@drawable/ic_baseline_people_24"/>
 </menu>
