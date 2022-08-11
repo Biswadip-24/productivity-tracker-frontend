@@ -3,10 +3,12 @@ package com.example.productivitytracker;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.productivitytracker.adapters.ActivityListAdapter;
 import com.example.productivitytracker.adapters.UserPostsAdapter;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 public class UsersFragment extends Fragment
 {
     FragmentUsersBinding binding;
+    UserPostsAdapter.OnItemClickListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,20 @@ public class UsersFragment extends Fragment
     }
 
     private void populatePosts(){
+        setOnPostClickListener();
         ArrayList<UserPost> userPosts = getPosts();
-        UserPostsAdapter adapter = new UserPostsAdapter(userPosts);
+        UserPostsAdapter adapter = new UserPostsAdapter(userPosts, listener);
         binding.rvUserPosts.setAdapter(adapter);
+    }
+
+    private void setOnPostClickListener(){
+        listener = (v, position) -> {
+            PostDetailsFragment nextFrag= new PostDetailsFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout, nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+        };
     }
 
     private ArrayList<UserPost> getPosts(){

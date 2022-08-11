@@ -17,13 +17,15 @@ import java.util.ArrayList;
 public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.ViewHolder> {
 
     private ArrayList<UserPost> userPosts;
+    private OnItemClickListener listener;
 
-    public UserPostsAdapter(ArrayList<UserPost> userPosts){
+    public UserPostsAdapter(ArrayList<UserPost> userPosts, OnItemClickListener listener){
         this.userPosts = userPosts;
+        this.listener = listener;
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView postText;
         private final ImageView authorImage;
@@ -37,6 +39,13 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
             authorImage = itemView.findViewById(R.id.author_image);
             authorName = itemView.findViewById(R.id.author_name);
             postTime = itemView.findViewById(R.id.post_time);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClick(v, getAdapterPosition());
         }
     }
 
@@ -61,6 +70,10 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
     @Override
     public int getItemCount() {
         return userPosts.size();
+    }
+
+    public interface OnItemClickListener{
+        void onClick(View v, int position);
     }
 
 }
