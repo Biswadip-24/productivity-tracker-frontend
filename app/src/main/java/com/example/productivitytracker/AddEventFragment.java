@@ -1,12 +1,14 @@
 package com.example.productivitytracker;
 
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -23,6 +25,8 @@ public class AddEventFragment extends BottomSheetDialogFragment {
     Button saveButton;
     TextInputLayout startTime;
     TextInputLayout endTime;
+
+    String[] eventType = {"Study", "Entertainment", "Gym", "Others"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,26 +48,17 @@ public class AddEventFragment extends BottomSheetDialogFragment {
     }
 
     private void setListeners(){
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveEvent();
-            }
-        });
+        saveButton.setOnClickListener(v -> saveEvent());
+        startTime.setEndIconOnClickListener(v -> showTimePickerDialog(binding.startTime.getEditText()));
+        endTime.setEndIconOnClickListener(v -> showTimePickerDialog(binding.endTime.getEditText()));
 
-        startTime.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(binding.startTime.getEditText());
-            }
-        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                getContext(),
+                R.layout.spinner_dropdown_item,
+                eventType);
 
-        endTime.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(binding.endTime.getEditText());
-            }
-        });
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        binding.eventSpinner.setAdapter(adapter);
     }
 
     private void saveEvent(){
@@ -76,19 +71,16 @@ public class AddEventFragment extends BottomSheetDialogFragment {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                int hour = calendar.get(Calendar.HOUR);
-                if(hour == 0) hour = 12;
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute1) -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            int hour1 = calendar.get(Calendar.HOUR);
+            if(hour1 == 0) hour1 = 12;
 
-                String min = (minute >= 10 ? "" : "0" )+ minute;
+            String min = (minute1 >= 10 ? "" : "0" )+ minute1;
 
-                String time = hour + " : " + min + " " + (hourOfDay >= 12 ? "PM" : "AM");
-                editText.setText(time);
-            }
+            String time = hour1 + " : " + min + " " + (hourOfDay >= 12 ? "PM" : "AM");
+            editText.setText(time);
         }, hour, minute, false);
 
         timePickerDialog.show();

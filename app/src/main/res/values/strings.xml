@@ -21,6 +21,7 @@
     <string name="add_event">Add Event</string>
     <string name="eventName">Event Name</string>
     <string name="eventDescription">Event Description</string>
+    <string name="eventType">Event Type : </string>
     <string name="startTime">Start Time</string>
     <string name="endTime">End Time</string>
 
