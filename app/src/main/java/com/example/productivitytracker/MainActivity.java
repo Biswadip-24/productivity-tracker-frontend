@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private UserViewModel viewModel;
+    private String userID = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
 
+        //setUp();
+        replaceFragment(new HomeFragment());
         setListeners();
     }
 
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    private void setUp(){
+        viewModel.fetchUserData(userID);
     }
 
     private void replaceFragment(Fragment fragment){

@@ -11,15 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.productivitytracker.R;
-import com.example.productivitytracker.models.Activity;
+import com.example.productivitytracker.models.Event;
 
 import java.util.ArrayList;
 
 public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ViewHolder> {
 
-    private ArrayList<Activity> activities;
+    private ArrayList<Event> activities;
 
-    public ActivityListAdapter(ArrayList<Activity> activities){
+    public ActivityListAdapter(ArrayList<Event> activities){
         this.activities = activities;
     }
 
