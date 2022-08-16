@@ -35,6 +35,7 @@
                 android:gravity="start"
                 android:padding="16dp"
                 android:hint="@string/post_description"
+                android:textColorHint="@color/gray"
                 android:fontFamily="@font/poppins"
                 android:background="@null"
                 android:textColor="@color/white" />

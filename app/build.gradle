@@ -45,4 +45,15 @@ dependencies {
     implementation 'com.github.vipulasri:timelineview:1.1.5'
 
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
+
+    //Retrofit dependencies
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.7'
+
+    //ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.6.0-alpha01"
+
+
 }
