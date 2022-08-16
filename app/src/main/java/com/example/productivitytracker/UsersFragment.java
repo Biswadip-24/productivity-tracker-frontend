@@ -32,8 +32,16 @@ public class UsersFragment extends Fragment
                              Bundle savedInstanceState) {
         binding = FragmentUsersBinding.inflate(inflater, container, false);
         populatePosts();
+        setListeners();
         return binding.getRoot();
 
+    }
+
+    private void setListeners(){
+        binding.fabAddPost.setOnClickListener(v -> {
+            AddPostFragment addPostFragment = new AddPostFragment();
+            addPostFragment.show(getParentFragmentManager(), addPostFragment.getTag());
+        });
     }
 
     private void populatePosts(){
