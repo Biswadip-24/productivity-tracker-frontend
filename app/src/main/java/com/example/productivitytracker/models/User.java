@@ -3,7 +3,7 @@ package com.example.productivitytracker.models;
 import java.util.List;
 
 public class User {
-    String userID;
+    int userID;
     String email;
     String userName;
     String firstName;
@@ -11,6 +11,5 @@ public class User {
 
     boolean isNewUser;
     List<Double> lastWeekProductivity;
-    int followers;
-
+    List<Integer> post_likes;
 }

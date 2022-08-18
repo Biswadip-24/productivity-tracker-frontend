@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.productivitytracker.adapters.ActivityListAdapter;
 import com.example.productivitytracker.databinding.FragmentHomeBinding;
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.Description;
@@ -24,6 +28,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -35,6 +40,9 @@ public class HomeFragment extends Fragment {
     final ArrayList<String> weekDaysLabel = new ArrayList<>();
     ArrayList<Event> userActivities = new ArrayList<>();
 
+    UserViewModel viewModel;
+    int userID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         barChart = binding.weeklyBarChart;
+
+        viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
+        viewModel.fetchTodayEvents(userID);
+
         populateChart();
         getUserActivities();
         setListeners();
@@ -55,10 +67,12 @@ public class HomeFragment extends Fragment {
         binding.userIcon.setOnClickListener(v -> openProfileActivity());
         binding.btRecommendations.setOnClickListener(v -> openRecommendationsActivity());
         binding.moreDetails.setOnClickListener(v -> openMetricsActivity());
+
+        viewModel.getTodayEvents().observe(requireActivity(), this::addUserEvents);
     }
 
-    private void populateChart(){
-
+    private void populateChart()
+    {
         getEntries();
         setWeeklyXAxisLabel();
 
@@ -69,7 +83,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getUserActivities(){
-        setSampleUserActivities();
+        //setSampleUserActivities();
         ActivityListAdapter adapter = new ActivityListAdapter(userActivities);
         binding.rvActivities.setAdapter(adapter);
     }
@@ -85,6 +99,10 @@ public class HomeFragment extends Fragment {
         barEntries.add(new BarEntry(5, 40));
         barEntries.add(new BarEntry(6, 50));
         barEntries.add(new BarEntry(7, 25));
+    }
+
+    private void addUserEvents(List<Event> events){
+        userActivities.addAll(events);
     }
 
     private void setSampleUserActivities(){

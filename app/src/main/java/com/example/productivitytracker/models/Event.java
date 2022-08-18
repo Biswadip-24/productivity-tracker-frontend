@@ -1,17 +1,21 @@
 package com.example.productivitytracker.models;
 
+import java.util.List;
+
 public class Event {
     String name;
     String icon;
     float time;
     double percentage;
 
-    String eventID;
-    String title;
-    String description;
-    String start_time;
-    String end_time;
-    String date;
+    public int eventID;
+    public String title;
+    public String description;
+    public String start_time;
+    public String end_time;
+    public String date;
+    public List<String> type;
+    public List<String> users;
 
     public Event(String name, String icon, float time, double percentage) {
         this.name = name;

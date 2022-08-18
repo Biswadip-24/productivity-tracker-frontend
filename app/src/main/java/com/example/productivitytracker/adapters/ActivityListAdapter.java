@@ -48,12 +48,15 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String name = activities.get(position).getName();
-        float time = activities.get(position).getTime();
+        String name = activities.get(position).title;
+        long diff = Long.parseLong(activities.get(position).end_time) - Long.parseLong(activities.get(position).start_time);
+        float hr = diff / (float) (60 * 60 * 1000);
+        String timeDiff = String.format("%.1f", hr);
+
         double percentage = activities.get(position).getPercentage();
 
         holder.txName.setText(name);
-        holder.time.setText(Float.toString(time) + "hr");
+        holder.time.setText(timeDiff + "hr");
         holder.percentage.setProgress((int)percentage);
     }
     @Override
