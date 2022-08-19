@@ -13,9 +13,11 @@ public interface ApiService {
     String BASE_URL = "http://google.com/"; // Need to be changed later
 
     @GET("/api/user/{userID}/")
-    Call<User> getUserDetails(@Path("userID") String userId);
+    Call<User> getUserDetails(@Path("userID") int userId);
 
     @GET("/api/event/{userID}/{timeStamp}")
     Call<List<Event>> getEvents(@Path("userID") int userId, @Path("timeStamp") String timeStamp);
+
+
 
 }

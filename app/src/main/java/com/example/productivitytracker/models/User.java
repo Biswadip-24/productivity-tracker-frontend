@@ -3,13 +3,13 @@ package com.example.productivitytracker.models;
 import java.util.List;
 
 public class User {
-    int userID;
-    String email;
-    String userName;
-    String firstName;
-    String lastName;
+    public int userID;
+    public String email;
+    public String userName;
+    public String firstName;
+    public String lastName;
 
-    boolean isNewUser;
-    List<Double> lastWeekProductivity;
-    List<Integer> post_likes;
+    public boolean isNewUser;
+    public List<Float> lastWeekProductivity;
+    public List<Integer> post_likes;
 }

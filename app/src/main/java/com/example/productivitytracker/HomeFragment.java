@@ -36,12 +36,20 @@ public class HomeFragment extends Fragment {
     BarChart barChart;
     BarData barData;
     BarDataSet barDataSet;
-    ArrayList<BarEntry> barEntries;
-    final ArrayList<String> weekDaysLabel = new ArrayList<>();
+    ArrayList<BarEntry> barEntries = new ArrayList<>();
+    ArrayList<String> weekDaysLabel = new ArrayList<>();
     ArrayList<Event> userActivities = new ArrayList<>();
 
     UserViewModel viewModel;
     int userID;
+
+    public static HomeFragment newInstance(int userID) {
+        HomeFragment f = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putInt("userID", userID);
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,13 +62,21 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         barChart = binding.weeklyBarChart;
 
+        Bundle args = getArguments();
+        userID = args.getInt("userID", 0);
+
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
-        viewModel.fetchTodayEvents(userID);
+        fetchData();
 
         populateChart();
-        getUserActivities();
+        setUserEvents();
         setListeners();
         return binding.getRoot();
+    }
+
+    private void fetchData(){
+        viewModel.fetchUserData(userID);
+        viewModel.fetchTodayEvents(userID);
     }
 
     private void setListeners(){
@@ -69,11 +85,12 @@ public class HomeFragment extends Fragment {
         binding.moreDetails.setOnClickListener(v -> openMetricsActivity());
 
         viewModel.getTodayEvents().observe(requireActivity(), this::addUserEvents);
+        viewModel.getUserData().observe(requireActivity(), this::getLastWeekProductivity);
     }
 
     private void populateChart()
     {
-        getEntries();
+        //getLastWeekProductivity();
         setWeeklyXAxisLabel();
 
         barDataSet = new BarDataSet(barEntries, "");
@@ -82,27 +99,35 @@ public class HomeFragment extends Fragment {
         styleBarChart();
     }
 
-    private void getUserActivities(){
+    private void setUserEvents(){
         //setSampleUserActivities();
         ActivityListAdapter adapter = new ActivityListAdapter(userActivities);
         binding.rvActivities.setAdapter(adapter);
     }
 
-    private void getEntries()
+    private void getLastWeekProductivity(User userData)
     {
         // These are all just test data. Later we fetch all these data from API call
-        barEntries = new ArrayList<>();
+        /*barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(1, 20));
         barEntries.add(new BarEntry(2, 23));
         barEntries.add(new BarEntry(3, 75));
         barEntries.add(new BarEntry(4, 67));
         barEntries.add(new BarEntry(5, 40));
         barEntries.add(new BarEntry(6, 50));
-        barEntries.add(new BarEntry(7, 25));
+        barEntries.add(new BarEntry(7, 25));*/
+
+        barEntries.clear();
+        for(int i = 0;i < userData.lastWeekProductivity.size(); i++){
+            barEntries.add(new BarEntry(i+1, userData.lastWeekProductivity.get(i)));
+        }
+        populateChart();
     }
 
     private void addUserEvents(List<Event> events){
+        userActivities.clear();
         userActivities.addAll(events);
+        setUserEvents();
     }
 
     private void setSampleUserActivities(){

@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private UserViewModel viewModel;
-    private String userID = "1";
+    int userID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //setUp();
-        replaceFragment(new HomeFragment());
+        replaceFragment(HomeFragment.newInstance(userID));
         setListeners();
     }
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()){
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(HomeFragment.newInstance(userID));
                     break;
                 case R.id.users:
                     replaceFragment(new UsersFragment());

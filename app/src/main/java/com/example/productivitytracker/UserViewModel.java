@@ -23,7 +23,7 @@ public class UserViewModel extends ViewModel
     private final MutableLiveData<List<Event>> todayEvents = new MutableLiveData<>();
     private final MutableLiveData<List<Event>> events = new MutableLiveData<>();
 
-    public void fetchUserData(String userID)
+    public void fetchUserData(int userID)
     {
         ApiClient.getInstance().getApiService().getUserDetails(userID).enqueue(new Callback<User>() {
             @Override
