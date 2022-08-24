@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.example.productivitytracker.databinding.FragmentUsersBinding;
 import com.example.productivitytracker.models.UserPost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UsersFragment extends Fragment
 {
     FragmentUsersBinding binding;
     UserPostsAdapter.OnItemClickListener listener;
+    UserViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,16 @@ public class UsersFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUsersBinding.inflate(inflater, container, false);
-        populatePosts();
+        viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
+        fetchData();
+
         setListeners();
         return binding.getRoot();
 
+    }
+
+    private void fetchData(){
+        viewModel.getPosts();
     }
 
     private void setListeners(){
@@ -42,12 +51,15 @@ public class UsersFragment extends Fragment
             AddPostFragment addPostFragment = new AddPostFragment();
             addPostFragment.show(getParentFragmentManager(), addPostFragment.getTag());
         });
+
+        viewModel.getAllPosts().observe(requireActivity(), this::populatePosts);
     }
 
-    private void populatePosts(){
+    private void populatePosts(List<UserPost> posts)
+    {
         setOnPostClickListener();
-        ArrayList<UserPost> userPosts = getPosts();
-        UserPostsAdapter adapter = new UserPostsAdapter(userPosts, listener);
+        //ArrayList<UserPost> userPosts = getPosts();
+        UserPostsAdapter adapter = new UserPostsAdapter(posts, listener);
         binding.rvUserPosts.setAdapter(adapter);
     }
 
@@ -64,14 +76,14 @@ public class UsersFragment extends Fragment
     private ArrayList<UserPost> getPosts(){
         ArrayList<UserPost> userPosts = new ArrayList<>();
 
-        for(int i = 1;i <= 5; i++){
+        /*for(int i = 1;i <= 5; i++){
             UserPost post = new UserPost();
             post.setUserName("user name");
             post.setTimeStamp("9:00 PM");
             post.setBody("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
 
             userPosts.add(post);
-        }
+        }*/
 
         return userPosts;
     }

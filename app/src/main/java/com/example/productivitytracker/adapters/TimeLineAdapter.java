@@ -9,17 +9,21 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.productivitytracker.R;
+import com.example.productivitytracker.models.Event;
 import com.example.productivitytracker.models.TimeLineModel;
 import com.github.vipulasri.timelineview.TimelineView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TimeLineModel> timeLineModelList;
+    private List<Event> timeLineModelList;
     private Context context;
 
-    public TimeLineAdapter(Context context, List<TimeLineModel> timeLineModelList) {
+    public TimeLineAdapter(Context context, List<Event> timeLineModelList) {
         this.timeLineModelList = timeLineModelList;
         this.context = context;
     }
@@ -32,14 +36,17 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder) holder).textView.setText(timeLineModelList.get(position).getName());
-        ((ViewHolder) holder).textViewDescription.setText(timeLineModelList.get(position).getDescription());
-        ((ViewHolder)holder).textViewTime.setText(timeLineModelList.get(position).getTime());
+        ((ViewHolder) holder).textView.setText(timeLineModelList.get(position).title);
+        ((ViewHolder) holder).textViewDescription.setText(timeLineModelList.get(position).description);
 
-        /*if (timeLineModelList.get(position).getStatus().equals("inactive"))
-            ((ViewHolder) holder).timelineView.setMarker(context.getDrawable(ic_remove_circle_outline_black_24dp));
-        else
-            ((ViewHolder) holder).timelineView.setMarker(context.getDrawable(ic_check_circle_black_24dp));*/
+        SimpleDateFormat tf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        String formattedDate = tf.format(timeLineModelList.get(position).start_time * 1000);
+        ((ViewHolder)holder).textViewTime.setText(formattedDate);
+
+        long duration = timeLineModelList.get(position).end_time - timeLineModelList.get(position).start_time;
+        String durationInHours = String.format("%.1f",duration / 3600.0) + " hr";
+
+        ((ViewHolder)holder).textViewDuration.setText(durationInHours);
     }
 
     @Override
@@ -55,7 +62,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private class ViewHolder extends RecyclerView.ViewHolder {
 
         TimelineView timelineView;
-        TextView textView, textViewDescription, textViewTime;
+        TextView textView, textViewDescription, textViewTime, textViewDuration;
 
         ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -63,6 +70,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             textView = itemView.findViewById(R.id.row_timeline_layout_text_view_name);
             textViewDescription = itemView.findViewById(R.id.row_timeline_layout_text_view_description);
             textViewTime = itemView.findViewById(R.id.row_timeline_layout_text_view_time);
+            textViewDuration = itemView.findViewById(R.id.row_timeline_layout_text_view_duration);
 
             timelineView.initLine(viewType);
         }

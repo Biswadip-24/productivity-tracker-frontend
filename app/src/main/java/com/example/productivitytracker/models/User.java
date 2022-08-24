@@ -12,4 +12,5 @@ public class User {
     public boolean isNewUser;
     public List<Float> lastWeekProductivity;
     public List<Integer> post_likes;
+    public List<Integer> badges;
 }

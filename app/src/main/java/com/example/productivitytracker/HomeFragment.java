@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -63,12 +67,11 @@ public class HomeFragment extends Fragment {
         barChart = binding.weeklyBarChart;
 
         Bundle args = getArguments();
-        userID = args.getInt("userID", 0);
+        userID = args.getInt("userID", 1);
 
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
         fetchData();
 
-        populateChart();
         setUserEvents();
         setListeners();
         return binding.getRoot();
@@ -86,37 +89,35 @@ public class HomeFragment extends Fragment {
 
         viewModel.getTodayEvents().observe(requireActivity(), this::addUserEvents);
         viewModel.getUserData().observe(requireActivity(), this::getLastWeekProductivity);
+        viewModel.getProductiveHours().observe(requireActivity(), this::setProductHours);
+        viewModel.getProductivityScore().observe(requireActivity(), this::setProductScore);
     }
 
     private void populateChart()
     {
-        //getLastWeekProductivity();
         setWeeklyXAxisLabel();
-
         barDataSet = new BarDataSet(barEntries, "");
         barData = new BarData(barDataSet);
         barChart.setData(barData);
         styleBarChart();
+        barChart.invalidate();
+    }
+
+    private void setProductHours(float productHours){
+        binding.productiveHours.setText(String.format("%.1f",productHours));
+    }
+
+    private void setProductScore(float score){
+        binding.productiveScore.setText((int) (score * 100.0) + "%");
     }
 
     private void setUserEvents(){
-        //setSampleUserActivities();
         ActivityListAdapter adapter = new ActivityListAdapter(userActivities);
         binding.rvActivities.setAdapter(adapter);
     }
 
     private void getLastWeekProductivity(User userData)
     {
-        // These are all just test data. Later we fetch all these data from API call
-        /*barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, 20));
-        barEntries.add(new BarEntry(2, 23));
-        barEntries.add(new BarEntry(3, 75));
-        barEntries.add(new BarEntry(4, 67));
-        barEntries.add(new BarEntry(5, 40));
-        barEntries.add(new BarEntry(6, 50));
-        barEntries.add(new BarEntry(7, 25));*/
-
         barEntries.clear();
         for(int i = 0;i < userData.lastWeekProductivity.size(); i++){
             barEntries.add(new BarEntry(i+1, userData.lastWeekProductivity.get(i)));
@@ -130,22 +131,19 @@ public class HomeFragment extends Fragment {
         setUserEvents();
     }
 
-    private void setSampleUserActivities(){
-        userActivities.add(new Event("Gym","", 3.1f,25));
-        userActivities.add(new Event("Screen Time","", 2.2f,20));
-        userActivities.add(new Event("Study","", 3,25));
-        userActivities.add(new Event("Meetings","", 2.3f,23));
-    }
-
     private void setWeeklyXAxisLabel() {
-        weekDaysLabel.add("M");
-        weekDaysLabel.add("T");
-        weekDaysLabel.add("W");
-        weekDaysLabel.add("T");
-        weekDaysLabel.add("F");
-        weekDaysLabel.add("S");
-        weekDaysLabel.add("S");
+        weekDaysLabel.clear();
+        String[] dayOfWeek = {"S", "S", "M", "T", "W", "T", "F"};
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        int count = 1;
+        while(count <= 7){
+            weekDaysLabel.add(dayOfWeek[day]);
+            day = (day - 1)%7;
+            if(day < 0) day += 7;
+            count++;
+        }
 
+        Collections.reverse(weekDaysLabel);
 
         ValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart);
         XAxis xAxis = barChart.getXAxis();
@@ -169,7 +167,9 @@ public class HomeFragment extends Fragment {
         barChart.setExtraOffsets(8,0,0,16);
 
         barDataSet.setDrawValues(false);
-        barDataSet.setColor(ContextCompat.getColor(getContext(), R.color.bar_graph_color));
+        if(getContext() != null){
+            barDataSet.setColor(ContextCompat.getColor(getContext(), R.color.bar_graph_color));
+        }
         barDataSet.setValueTextColor(Color.WHITE);
         barChart.getAxisLeft().setTextColor(Color.WHITE);
         barDataSet.setValueTextSize(18f);
@@ -200,6 +200,9 @@ public class HomeFragment extends Fragment {
 
     private void openMetricsActivity(){
         Intent intent = new Intent(getActivity(), MetricsActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("userID", userID);
+        intent.putExtras(b);
         startActivity(intent);
     }
 }

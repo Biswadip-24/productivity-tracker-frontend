@@ -70,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Comments"
+                android:id="@+id/comments"
                 android:fontFamily="@font/poppins"
                 android:textColor="@color/gray"/>
 
@@ -81,6 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/likes"
                 android:text="346 Likes"
                 android:fontFamily="@font/poppins"
                 android:textColor="@color/gray"/>

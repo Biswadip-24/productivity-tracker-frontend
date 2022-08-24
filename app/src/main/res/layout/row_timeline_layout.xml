@@ -16,12 +16,27 @@
         app:endLineColor="@color/white"
         app:linePadding="5dp"/>
 
-    <TextView
-        android:id="@+id/row_timeline_layout_text_view_time"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="11:00 AM"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/row_timeline_layout_text_view_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11:00 AM"/>
+
+        <TextView
+            android:id="@+id/row_timeline_layout_text_view_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1hr"  />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
