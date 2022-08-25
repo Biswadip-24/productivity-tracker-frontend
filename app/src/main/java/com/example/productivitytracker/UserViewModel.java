@@ -35,6 +35,7 @@ public class UserViewModel extends ViewModel
     private final MutableLiveData<HashMap<String, Long>> types = new MutableLiveData<>();
     private final MutableLiveData<Float> productivityScore = new MutableLiveData<>();
     private final MutableLiveData<List<UserPost>> allPosts = new MutableLiveData<>();
+    private final MutableLiveData<UserPost> post = new MutableLiveData<>();
     private final MutableLiveData<List<Comment>> postComments = new MutableLiveData<>();
 
     public void fetchUserData(int userID)
@@ -109,6 +110,19 @@ public class UserViewModel extends ViewModel
                 Log.e(TAG, "Error getting all posts");
             }
         });
+    }
+
+    public void fetchPost(int postID){
+       ApiClient.getInstance().getApiService().getPost(postID).enqueue(new Callback<UserPost>() {
+           @Override
+           public void onResponse(Call<UserPost> call, Response<UserPost> response) {
+               post.setValue(response.body());
+           }
+           @Override
+           public void onFailure(Call<UserPost> call, Throwable t) {
+                Log.e(TAG, "Failed to get post "+ postID);
+           }
+       });
     }
 
     public void fetchPostComments(int postID){
@@ -210,5 +224,6 @@ public class UserViewModel extends ViewModel
     public MutableLiveData<Float> getProductivityScore() {return productivityScore;}
     public MutableLiveData<HashMap<String,Long>> getTypes(){return types;}
     public MutableLiveData<List<UserPost>> getAllPosts(){return allPosts;}
+    public MutableLiveData<UserPost> getPost(){return post;}
     public MutableLiveData<List<Comment>> getPostComments(){return postComments;}
 }

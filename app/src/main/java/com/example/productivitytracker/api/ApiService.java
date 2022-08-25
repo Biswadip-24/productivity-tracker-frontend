@@ -29,6 +29,9 @@ public interface ApiService {
     @GET("/api/post/")
     Call<List<UserPost>> getALlPosts();
 
+    @GET("/api/post/{postID}")
+    Call<UserPost> getPost(@Path("postID") int postID);
+
     @GET("/api/postComments/{postID}/")
     Call<List<Comment>> getPostComments(@Path("postID") int postID);
 
@@ -37,4 +40,7 @@ public interface ApiService {
 
     @POST("/api/post/")
     Call<UserPost> addPost(@Body RequestBody params);
+
+    /*@POST("/api/likePost/")
+    Call<> likePost(@Body RequestBody params);*/
 }

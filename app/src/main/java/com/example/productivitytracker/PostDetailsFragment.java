@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.example.productivitytracker.adapters.CommentListAdapter;
 import com.example.productivitytracker.databinding.FragmentPostDetailsBinding;
 import com.example.productivitytracker.models.Comment;
+import com.example.productivitytracker.models.UserPost;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -53,8 +54,8 @@ public class PostDetailsFragment extends Fragment
     }
 
     private void fetchData(){
-
         viewModel.fetchPostComments(postID);
+        viewModel.fetchPost(postID);
     }
 
     /*private void populateData(){
@@ -78,6 +79,13 @@ public class PostDetailsFragment extends Fragment
         });
 
         viewModel.getPostComments().observe(requireActivity(), this::showComments);
+        viewModel.getPost().observe(requireActivity(), this::populatePost);
+    }
+
+    private void populatePost(UserPost post){
+        binding.authorName.setText(post.user + "");
+        binding.postTime.setText(post.timestamp);
+        binding.postDescription.setText(post.body);
     }
 
     private void addComment()
