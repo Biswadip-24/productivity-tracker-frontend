@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,16 @@ public class UsersFragment extends Fragment
     UserPostsAdapter.OnItemClickListener listener;
     UserViewModel viewModel;
 
+    int userID = -1;
+
+    public static UsersFragment newInstance(int userID) {
+        UsersFragment f = new UsersFragment();
+        Bundle args = new Bundle();
+        args.putInt("userID", userID);
+        f.setArguments(args);
+        return f;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +46,9 @@ public class UsersFragment extends Fragment
                              Bundle savedInstanceState) {
         binding = FragmentUsersBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
+        Bundle args = getArguments();
+        userID = args.getInt("userID", 1);
+
         fetchData();
 
         setListeners();
@@ -43,12 +57,12 @@ public class UsersFragment extends Fragment
     }
 
     private void fetchData(){
-        viewModel.getPosts();
+        viewModel.fetchPosts();
     }
 
     private void setListeners(){
         binding.fabAddPost.setOnClickListener(v -> {
-            AddPostFragment addPostFragment = new AddPostFragment();
+            AddPostFragment addPostFragment = AddPostFragment.newInstance(userID);
             addPostFragment.show(getParentFragmentManager(), addPostFragment.getTag());
         });
 
@@ -58,14 +72,13 @@ public class UsersFragment extends Fragment
     private void populatePosts(List<UserPost> posts)
     {
         setOnPostClickListener();
-        //ArrayList<UserPost> userPosts = getPosts();
         UserPostsAdapter adapter = new UserPostsAdapter(posts, listener);
         binding.rvUserPosts.setAdapter(adapter);
     }
 
     private void setOnPostClickListener(){
-        listener = (v, position) -> {
-            PostDetailsFragment nextFrag= new PostDetailsFragment();
+        listener = (v, position, postID) -> {
+            PostDetailsFragment nextFrag= PostDetailsFragment.newInstance(userID, postID);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout, nextFrag, "findThisFragment")
                     .addToBackStack(null)

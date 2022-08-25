@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.productivitytracker.databinding.ActivityMainBinding;
+import com.example.productivitytracker.models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(HomeFragment.newInstance(userID));
                     break;
                 case R.id.users:
-                    replaceFragment(new UsersFragment());
+                    replaceFragment(UsersFragment.newInstance(userID));
                     break;
             }
 

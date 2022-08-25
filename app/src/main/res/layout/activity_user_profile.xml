@@ -96,18 +96,36 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <EditText
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#EFEFEF"
+                android:backgroundTintMode="src_in"
+                android:enabled="false"
+                android:clickable="false"
+                android:ems="10"
+                android:hint="@string/user_name"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:textColor="@color/white"
+                android:textAlignment="center" />
+
+            <EditText
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#EFEFEF"
                 android:backgroundTintMode="src_in"
+                android:enabled="false"
                 android:clickable="false"
                 android:ems="10"
                 android:hint="@string/user_name"
                 android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:textColor="@color/white" />
+                android:inputType="none"
+                android:textColor="@color/white"
+                android:textAlignment="center" />
 
             <EditText
                 android:id="@+id/email_address"
@@ -115,10 +133,13 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:autofillHints=""
+                android:enabled="false"
                 android:ems="10"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:inputType="none"
+                android:textColor="@color/white"
+                tools:ignore="SpeakableTextPresentCheck"
+                android:textAlignment="center" />
 
             <EditText
                 android:id="@+id/age"
@@ -127,6 +148,7 @@
                 android:layout_marginTop="20dp"
                 android:ems="10"
                 android:hint="@string/age"
+                android:textAlignment="center"
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal" />
 

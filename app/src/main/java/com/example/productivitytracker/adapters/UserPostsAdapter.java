@@ -1,5 +1,6 @@
 package com.example.productivitytracker.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
         private final TextView authorName;
         private final TextView commentsCount;
         private final TextView likesCount;
+        private int postID;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,7 +53,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
 
         @Override
         public void onClick(View v) {
-            listener.onClick(v, getAdapterPosition());
+            listener.onClick(v, getAdapterPosition(), postID);
         }
     }
 
@@ -75,6 +77,8 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
         holder.postText.setText(body);
         holder.commentsCount.setText(commentCount + " comments");
         holder.likesCount.setText(likesCount + " likes");
+        holder.postID = userPosts.get(position).postID;
+
     }
 
     @Override
@@ -83,7 +87,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
     }
 
     public interface OnItemClickListener{
-        void onClick(View v, int position);
+        void onClick(View v, int position, int postID);
     }
 
 }

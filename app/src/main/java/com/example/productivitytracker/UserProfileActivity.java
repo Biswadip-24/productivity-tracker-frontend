@@ -1,11 +1,13 @@
 package com.example.productivitytracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.service.autofill.UserData;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,9 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.productivitytracker.models.User;
+
 import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
+    private EditText fullName;
     private EditText UserName;
     private EditText Age;
     private EditText Email;
@@ -27,19 +32,30 @@ public class UserProfileActivity extends AppCompatActivity {
     //TODO: Rename parameters appropriately
     private static final String[] KEY_HOURS = {"Sleep_Hours","Work_Hours","Screen_Hours","Workout_Hours"};
     private SharedPreferences prefs;
+
+    int userID;
+    UserViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         View closeButton = findViewById(R.id.close_button);
 
-        closeButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                setResult(RESULT_OK);
-                finish();
-            }
+        Bundle b = getIntent().getExtras();
+        if(b != null) userID = b.getInt("userID");
+
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.fetchUserData(userID);
+
+        setListeners();
+
+        closeButton.setOnClickListener(v -> {
+            setResult(RESULT_OK);
+            finish();
         });
 
+        fullName = findViewById(R.id.fullName);
         UserName = findViewById(R.id.userName);
         Email = findViewById(R.id.email_address);
         Age = findViewById(R.id.age);
@@ -56,6 +72,16 @@ public class UserProfileActivity extends AppCompatActivity {
         Age.setText(prefs.getString(KEY_AGE,""));
 
         setSpinners();
+    }
+
+    private void setListeners(){
+        viewModel.getUserData().observe(this, this::populateUserData);
+    }
+
+    private void populateUserData(User userData){
+        fullName.setText(userData.firstName + " " + userData.lastName);
+        UserName.setText(userData.userName);
+        Email.setText(userData.email);
     }
 
     public void setSpinners(){

@@ -1,7 +1,7 @@
 package com.example.productivitytracker.models;
 
 public class UserPost {
-    public int postId;
+    public int postID;
     public String body;
     public String timestamp;
     public int numLikes;

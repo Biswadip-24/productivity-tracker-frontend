@@ -190,6 +190,9 @@ public class HomeFragment extends Fragment {
 
     private void openProfileActivity(){
         Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("userID", userID);
+        intent.putExtras(b);
         startActivity(intent);
     }
 

@@ -9,12 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.productivitytracker.R;
+import com.example.productivitytracker.models.Comment;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder>{
-    private ArrayList<String> comments;
+    private List<Comment> comments;
 
-    public CommentListAdapter(ArrayList<String> comments){
+    public CommentListAdapter(List<Comment> comments){
         this.comments = comments;
     }
 
@@ -37,7 +40,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CommentListAdapter.ViewHolder holder, int position) {
-        String body = comments.get(position);
+        String body = comments.get(position).body;
         holder.tvComment.setText(body);
     }
 

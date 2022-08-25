@@ -1,5 +1,6 @@
 package com.example.productivitytracker.api;
 
+import com.example.productivitytracker.models.Comment;
 import com.example.productivitytracker.models.Event;
 import com.example.productivitytracker.models.User;
 import com.example.productivitytracker.models.UserPost;
@@ -27,4 +28,13 @@ public interface ApiService {
 
     @GET("/api/post/")
     Call<List<UserPost>> getALlPosts();
+
+    @GET("/api/postComments/{postID}/")
+    Call<List<Comment>> getPostComments(@Path("postID") int postID);
+
+    @POST("/api/comment/")
+    Call<Comment> addComment(@Body RequestBody params);
+
+    @POST("/api/post/")
+    Call<UserPost> addPost(@Body RequestBody params);
 }

@@ -1,11 +1,13 @@
 package com.example.productivitytracker;
 
+import android.util.ArrayMap;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.productivitytracker.api.ApiClient;
+import com.example.productivitytracker.models.Comment;
 import com.example.productivitytracker.models.Event;
 import com.example.productivitytracker.models.User;
 import com.example.productivitytracker.models.UserPost;
@@ -33,6 +35,7 @@ public class UserViewModel extends ViewModel
     private final MutableLiveData<HashMap<String, Long>> types = new MutableLiveData<>();
     private final MutableLiveData<Float> productivityScore = new MutableLiveData<>();
     private final MutableLiveData<List<UserPost>> allPosts = new MutableLiveData<>();
+    private final MutableLiveData<List<Comment>> postComments = new MutableLiveData<>();
 
     public void fetchUserData(int userID)
     {
@@ -95,7 +98,7 @@ public class UserViewModel extends ViewModel
 
     }
 
-    public void getPosts(){
+    public void fetchPosts(){
         ApiClient.getInstance().getApiService().getALlPosts().enqueue(new Callback<List<UserPost>>() {
             @Override
             public void onResponse(Call<List<UserPost>> call, Response<List<UserPost>> response) {
@@ -104,6 +107,59 @@ public class UserViewModel extends ViewModel
             @Override
             public void onFailure(Call<List<UserPost>> call, Throwable t) {
                 Log.e(TAG, "Error getting all posts");
+            }
+        });
+    }
+
+    public void fetchPostComments(int postID){
+        ApiClient.getInstance().getApiService().getPostComments(postID).enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                postComments.setValue(response.body());
+                Log.d(TAG, response.body().toString());
+            }
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                Log.e(TAG, "Failed to get comments");
+            }
+        });
+    }
+
+    public void addComment(int userID, int postID, String text){
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("post", postID);
+        jsonParams.put("user", userID);
+        jsonParams.put("body", text);
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
+
+        ApiClient.getInstance().getApiService().addComment(body).enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                fetchPostComments(postID);
+                Log.d(TAG, "Comment added");
+            }
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+                Log.e(TAG, "Failed to add comment");
+            }
+        });
+    }
+
+    public void addPost(int userID, String text){
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("user", userID);
+        jsonParams.put("body", text);
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
+
+        ApiClient.getInstance().getApiService().addPost(body).enqueue(new Callback<UserPost>() {
+            @Override
+            public void onResponse(Call<UserPost> call, Response<UserPost> response) {
+                Log.d(TAG, "Post added");
+                fetchPosts();
+            }
+            @Override
+            public void onFailure(Call<UserPost> call, Throwable t) {
+                Log.e(TAG, "Failed to add post");
             }
         });
     }
@@ -154,4 +210,5 @@ public class UserViewModel extends ViewModel
     public MutableLiveData<Float> getProductivityScore() {return productivityScore;}
     public MutableLiveData<HashMap<String,Long>> getTypes(){return types;}
     public MutableLiveData<List<UserPost>> getAllPosts(){return allPosts;}
+    public MutableLiveData<List<Comment>> getPostComments(){return postComments;}
 }
