@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
     private void setWeeklyXAxisLabel() {
         weekDaysLabel.clear();
         String[] dayOfWeek = {"S", "S", "M", "T", "W", "T", "F"};
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) % 7;
         int count = 1;
         while(count <= 7){
             weekDaysLabel.add(dayOfWeek[day]);

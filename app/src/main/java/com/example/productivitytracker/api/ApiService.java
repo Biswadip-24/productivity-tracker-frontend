@@ -41,6 +41,9 @@ public interface ApiService {
     @POST("/api/post/")
     Call<UserPost> addPost(@Body RequestBody params);
 
-    /*@POST("/api/likePost/")
-    Call<> likePost(@Body RequestBody params);*/
+    @POST("/api/likePost/{postID}/{userID}/")
+    Call<UserPost> likePost(@Path("postID") int postID, @Path("userID") int userId);
+
+    @POST("/api/unLikePost/{postID}/{userID}/")
+    Call<UserPost> unLikePost(@Path("postID") int postID, @Path("userID") int userId);
 }

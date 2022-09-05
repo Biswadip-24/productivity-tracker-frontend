@@ -38,6 +38,8 @@ public class UserViewModel extends ViewModel
     private final MutableLiveData<UserPost> post = new MutableLiveData<>();
     private final MutableLiveData<List<Comment>> postComments = new MutableLiveData<>();
 
+    private String[] eventType = {"Study", "Entertainment", "Gym", "Others"};
+
     public void fetchUserData(int userID)
     {
         ApiClient.getInstance().getApiService().getUserDetails(userID).enqueue(new Callback<User>() {
@@ -143,6 +145,7 @@ public class UserViewModel extends ViewModel
         Map<String, Object> jsonParams = new ArrayMap<>();
         jsonParams.put("post", postID);
         jsonParams.put("user", userID);
+        jsonParams.put("timestamp", System.currentTimeMillis()/1000);
         jsonParams.put("body", text);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
 
@@ -159,10 +162,37 @@ public class UserViewModel extends ViewModel
         });
     }
 
+    public void likePost(int userID, int postID){
+        ApiClient.getInstance().getApiService().likePost(postID,userID).enqueue(new Callback<UserPost>() {
+            @Override
+            public void onResponse(Call<UserPost> call, Response<UserPost> response) {
+                Log.d(TAG, "Post liked " + response);
+            }
+            @Override
+            public void onFailure(Call<UserPost> call, Throwable t) {
+                Log.e(TAG, "Failed to like post");
+            }
+        });
+    }
+
+    public void unLikePost(int userID, int postID){
+        ApiClient.getInstance().getApiService().unLikePost(postID,userID).enqueue(new Callback<UserPost>() {
+            @Override
+            public void onResponse(Call<UserPost> call, Response<UserPost> response) {
+                Log.d(TAG, "Post unliked");
+            }
+            @Override
+            public void onFailure(Call<UserPost> call, Throwable t) {
+                Log.e(TAG, "Failed to unlike post");
+            }
+        });
+    }
+
     public void addPost(int userID, String text){
         Map<String, Object> jsonParams = new ArrayMap<>();
         jsonParams.put("user", userID);
         jsonParams.put("body", text);
+        jsonParams.put("timestamp", System.currentTimeMillis()/1000);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
 
         ApiClient.getInstance().getApiService().addPost(body).enqueue(new Callback<UserPost>() {
@@ -181,12 +211,15 @@ public class UserViewModel extends ViewModel
     private void calculateProductiveHours() {
         List<Event> list = todayEvents.getValue();
         float totalDuration = 0.0f;
-        for(int i = 0;list != null && i < list.size(); i++){
-            long startTime = list.get(i).start_time;
-            long endTime = list.get(i).end_time;
+        for(int i = 0;list != null && i < list.size(); i++)
+        {
+            if(list.get(i).type.equalsIgnoreCase(eventType[0]) || list.get(i).type.equalsIgnoreCase(eventType[2])){
+                long startTime = list.get(i).start_time;
+                long endTime = list.get(i).end_time;
 
-            float duration = (float) (endTime - startTime) / 3600.0f;
-            totalDuration += duration;
+                float duration = (float) (endTime - startTime) / 3600.0f;
+                totalDuration += duration;
+            }
         }
         productiveHours.setValue(totalDuration);
         calculateProdScore();

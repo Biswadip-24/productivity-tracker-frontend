@@ -14,8 +14,12 @@ import com.example.productivitytracker.PostDetailsFragment;
 import com.example.productivitytracker.R;
 import com.example.productivitytracker.models.UserPost;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.ViewHolder> {
 
@@ -68,7 +72,11 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String name = userPosts.get(position).user + "";
         String body = userPosts.get(position).body;
-        String time = userPosts.get(position).timestamp;
+
+        Date date = new Date(Long.parseLong(userPosts.get(position).timestamp) * 1000);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d,yyyy h:mm a");
+        String time = sdf.format(date);
+
         int commentCount = userPosts.get(position).numComments;
         int likesCount = userPosts.get(position).numLikes;
 
