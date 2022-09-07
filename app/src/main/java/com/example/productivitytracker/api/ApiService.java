@@ -35,7 +35,7 @@ public interface ApiService {
     @GET("/api/postComments/{postID}/")
     Call<List<Comment>> getPostComments(@Path("postID") int postID);
 
-    @POST("/api/comment/")
+    @POST("/api/addComment/")
     Call<Comment> addComment(@Body RequestBody params);
 
     @POST("/api/post/")
