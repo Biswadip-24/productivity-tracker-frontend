@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private UserViewModel viewModel;
-    int userID = 1;
+    int userID = 1; // change this id according to your local database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
