@@ -143,9 +143,8 @@ public class UserViewModel extends ViewModel
 
     public void addComment(int userID, int postID, String text){
         Map<String, Object> jsonParams = new ArrayMap<>();
-        jsonParams.put("post", postID);
-        jsonParams.put("user", userID);
-        jsonParams.put("timestamp", System.currentTimeMillis()/1000);
+        jsonParams.put("postID", postID);
+        jsonParams.put("userID", userID);
         jsonParams.put("body", text);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
 
