@@ -19,6 +19,7 @@
 
         <ImageView
             android:id="@+id/activity_icon"
+            android:layout_margin="8dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@android:mipmap/sym_def_app_icon"

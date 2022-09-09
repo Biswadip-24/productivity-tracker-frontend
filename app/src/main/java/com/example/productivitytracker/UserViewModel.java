@@ -37,6 +37,7 @@ public class UserViewModel extends ViewModel
     private final MutableLiveData<List<UserPost>> allPosts = new MutableLiveData<>();
     private final MutableLiveData<UserPost> post = new MutableLiveData<>();
     private final MutableLiveData<List<Comment>> postComments = new MutableLiveData<>();
+    private final MutableLiveData<List<String>> recommendations = new MutableLiveData<>();
 
     private String[] eventType = {"Study", "Entertainment", "Gym", "Others"};
 
@@ -62,6 +63,7 @@ public class UserViewModel extends ViewModel
                 todayEvents.setValue(response.body());
                 calculateProductiveHours();
                 calculateTypes();
+                generateRecommendations();
             }
 
             @Override
@@ -246,6 +248,11 @@ public class UserViewModel extends ViewModel
         types.setValue(map);
     }
 
+    private void generateRecommendations(){
+        RecommendationsService service = new RecommendationsService(todayEvents.getValue());
+        recommendations.setValue(service.getRecommendations());
+    }
+
 
     public MutableLiveData<User> getUserData() {
         return userData;
@@ -258,4 +265,5 @@ public class UserViewModel extends ViewModel
     public MutableLiveData<List<UserPost>> getAllPosts(){return allPosts;}
     public MutableLiveData<UserPost> getPost(){return post;}
     public MutableLiveData<List<Comment>> getPostComments(){return postComments;}
+    public MutableLiveData<List<String>> getRecommendations(){return recommendations;}
 }

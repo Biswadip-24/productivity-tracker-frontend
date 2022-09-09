@@ -1,6 +1,7 @@
 package com.example.productivitytracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
@@ -9,10 +10,13 @@ import com.example.productivitytracker.databinding.ActivityRecommendationsBindin
 import com.example.productivitytracker.models.Recommendation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecommendationsActivity extends AppCompatActivity
 {
     ActivityRecommendationsBinding binding;
+    UserViewModel viewModel;
+    int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +24,24 @@ public class RecommendationsActivity extends AppCompatActivity
         binding = ActivityRecommendationsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        populateRecommendations();
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        Bundle b = getIntent().getExtras();
+        if(b != null) userID = b.getInt("userID");
+
+        viewModel.fetchUserData(userID);
+        viewModel.fetchTodayEvents(userID);
+
+        setListeners();
+        //populateRecommendations();
     }
 
-    private void populateRecommendations(){
-        RecommendationsAdapter adapter = new RecommendationsAdapter(getRecommendations());
+    private void setListeners(){
+        viewModel.getRecommendations().observe(this, this::populateRecommendations);
+    }
+
+    private void populateRecommendations(List<String> recommendations){
+        //RecommendationsAdapter adapter = new RecommendationsAdapter(getRecommendations());
+        RecommendationsAdapter adapter = new RecommendationsAdapter(recommendations);
         binding.rvRecommendations.setAdapter(adapter);
 
     }

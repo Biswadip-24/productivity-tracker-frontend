@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
         fetchData();
 
-        setUserEvents();
+        //setUserEvents();
         setListeners();
         return binding.getRoot();
     }
@@ -111,8 +111,8 @@ public class HomeFragment extends Fragment {
         binding.productiveScore.setText((int) (score * 100.0) + "%");
     }
 
-    private void setUserEvents(){
-        ActivityListAdapter adapter = new ActivityListAdapter(userActivities);
+    private void setUserEvents(float totalDuration){
+        ActivityListAdapter adapter = new ActivityListAdapter(userActivities, totalDuration);
         binding.rvActivities.setAdapter(adapter);
     }
 
@@ -128,7 +128,16 @@ public class HomeFragment extends Fragment {
     private void addUserEvents(List<Event> events){
         userActivities.clear();
         userActivities.addAll(events);
-        setUserEvents();
+
+        float totalDuration = 0.0f;
+        for(int i = 0;i < events.size(); i++) {
+            long startTime = events.get(i).start_time;
+            long endTime = events.get(i).end_time;
+
+            float duration = (float) (endTime - startTime) / 3600.0f;
+            totalDuration += duration;
+        }
+        setUserEvents(totalDuration);
     }
 
     private void setWeeklyXAxisLabel() {
@@ -198,6 +207,9 @@ public class HomeFragment extends Fragment {
 
     private void openRecommendationsActivity(){
         Intent intent = new Intent(getActivity(), RecommendationsActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("userID", userID);
+        intent.putExtras(b);
         startActivity(intent);
     }
 

@@ -12,11 +12,12 @@ import com.example.productivitytracker.R;
 import com.example.productivitytracker.models.Recommendation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecommendationsAdapter extends RecyclerView.Adapter<RecommendationsAdapter.ViewHolder>{
-    private ArrayList<Recommendation> recommendations;
+    private List<String> recommendations;
 
-    public RecommendationsAdapter(ArrayList<Recommendation> recommendations){
+    public RecommendationsAdapter(List<String> recommendations){
         this.recommendations = recommendations;
     }
 
@@ -40,7 +41,7 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
 
     @Override
     public void onBindViewHolder(@NonNull RecommendationsAdapter.ViewHolder holder, int position) {
-        String body = recommendations.get(position).getBody();
+        String body = recommendations.get(position);
         holder.postText.setText(body);
     }
 

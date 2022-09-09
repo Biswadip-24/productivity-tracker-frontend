@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ViewHolder> {
 
     private ArrayList<Event> activities;
+    private float totalDuration;
 
-    public ActivityListAdapter(ArrayList<Event> activities){
+    public ActivityListAdapter(ArrayList<Event> activities, float totalDuration){
         this.activities = activities;
+        this.totalDuration = totalDuration;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -53,12 +55,19 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
         //long diff = Long.parseLong(activities.get(position).end_time) - Long.parseLong(activities.get(position).start_time);
         float hr = diff / (float) (60 * 60);
         String timeDiff = String.format("%.1f", hr);
+        int percentage = (int)((hr / (float) totalDuration) * 100.0);
 
         //double percentage = activities.get(position).getPercentage();
 
         holder.txName.setText(name);
         holder.time.setText(timeDiff + "hr");
-        holder.percentage.setProgress((50));
+        holder.percentage.setProgress(percentage);
+        String eventType = activities.get(position).type;
+
+        if(eventType.equalsIgnoreCase("Study")) holder.icon.setBackgroundResource(R.drawable.studying);
+        else if(eventType.equalsIgnoreCase("Gym")) holder.icon.setBackgroundResource(R.drawable.weightlifter);
+        else if(eventType.equalsIgnoreCase("Entertainment")) holder.icon.setBackgroundResource(R.drawable.popcorn);
+        else holder.icon.setBackgroundResource(R.drawable.others);
     }
     @Override
     public int getItemCount() {
