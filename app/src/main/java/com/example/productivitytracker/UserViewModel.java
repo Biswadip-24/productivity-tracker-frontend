@@ -381,7 +381,8 @@ public class UserViewModel extends ViewModel
             sleepTime = userIdealData.getValue().get(userIdealData.getValue().size() - 1).sleep_time;
         }
         int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - sleepTime;
-        productivityScore.setValue(productiveHours.getValue() / (float)hours);
+        if(hours < sleepTime) productivityScore.setValue(1.0f);
+        else productivityScore.setValue(productiveHours.getValue() / (float)hours);
 
     }
 
