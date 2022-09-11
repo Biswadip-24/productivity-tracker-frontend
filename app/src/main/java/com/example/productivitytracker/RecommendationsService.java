@@ -1,6 +1,7 @@
 package com.example.productivitytracker;
 
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.IdealData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,10 +17,13 @@ public class RecommendationsService
 
     float prodHours;
     float prodScore;
+    IdealData idealData;
 
-    RecommendationsService(List<Event> eventList){
+    RecommendationsService(List<Event> eventList, IdealData idealData){
         this.events = eventList;
+        this.idealData = idealData;
         generateRecommendations();
+
     }
 
     public List<String> getRecommendations(){
@@ -32,8 +36,10 @@ public class RecommendationsService
         recommendations.clear();
 
         if(prodScore < 0.4) recommendations.add("Your productivity is too low today. Try doing some productive work.");
-        if(eventPercentage[1] > 0.4) recommendations.add("You have spent too much time in Entertainment. Time to relax your eyes and be more productive!");
         if(eventPercentage[2] < 0.05) recommendations.add("You haven't spent any time in gym today. Regular physical activity can improve your muscle strength and boost your endurance. Time to do some exercise!");
+
+        if(eventDuration[1] > idealData.screen_time) recommendations.add("You have spent more time on Entertainment than your expected goal. Time to relax your eyes ");
+        else if(eventPercentage[1] > 0.4) recommendations.add("You have spent too much time in Entertainment. Time to relax your eyes and be more productive!");
     }
 
     private void calculateProdScore(){

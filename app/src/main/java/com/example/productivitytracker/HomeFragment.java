@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.productivitytracker.adapters.ActivityListAdapter;
 import com.example.productivitytracker.databinding.FragmentHomeBinding;
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.Score;
 import com.example.productivitytracker.models.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
@@ -27,6 +28,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,13 +51,24 @@ public class HomeFragment extends Fragment {
 
     UserViewModel viewModel;
     int userID;
+    String emailId;
+    String firstName, lastName;
 
-    public static HomeFragment newInstance(int userID) {
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
+    public static HomeFragment newInstance(String emailId) {
         HomeFragment f = new HomeFragment();
         Bundle args = new Bundle();
-        args.putInt("userID", userID);
+        args.putString("emailId", emailId);
         f.setArguments(args);
         return f;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.fetchUserDataByEmail(emailId);
     }
 
     @Override
@@ -67,19 +83,25 @@ public class HomeFragment extends Fragment {
         barChart = binding.weeklyBarChart;
 
         Bundle args = getArguments();
-        userID = args.getInt("userID", 1);
+        emailId = args.getString("emailId");
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(requireActivity(), gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireActivity());
+        if(account != null){
+            firstName = account.getDisplayName().substring(0, account.getDisplayName().indexOf(' '));
+            lastName = account.getDisplayName().substring(account.getDisplayName().indexOf(' ') + 1);
+        }
 
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
-        fetchData();
+        //fetchData();
 
-        //setUserEvents();
         setListeners();
         return binding.getRoot();
     }
 
     private void fetchData(){
-        viewModel.fetchUserData(userID);
-        viewModel.fetchTodayEvents(userID);
+        viewModel.fetchUserDataByEmail(emailId);
     }
 
     private void setListeners(){
@@ -87,10 +109,25 @@ public class HomeFragment extends Fragment {
         binding.btRecommendations.setOnClickListener(v -> openRecommendationsActivity());
         binding.moreDetails.setOnClickListener(v -> openMetricsActivity());
 
+        viewModel.getUserExists().observe(requireActivity(), this::createUser);
         viewModel.getTodayEvents().observe(requireActivity(), this::addUserEvents);
-        viewModel.getUserData().observe(requireActivity(), this::getLastWeekProductivity);
+        viewModel.getUserData().observe(requireActivity(), this::getUserID);
+        viewModel.getLastWeekScore().observe(requireActivity(), this::getLastWeekProductivity);
         viewModel.getProductiveHours().observe(requireActivity(), this::setProductHours);
         viewModel.getProductivityScore().observe(requireActivity(), this::setProductScore);
+    }
+
+    private void getUserID(User user){
+        if(user == null) return;
+        userID = user.userID;
+        viewModel.fetchTodayEvents(userID);
+        viewModel.fetchLastWeekProductivity(userID);
+    }
+
+    private void createUser(Boolean userExists){
+        if(!userExists){
+            viewModel.createUser(emailId, firstName,lastName, firstName + " " + lastName);
+        }
     }
 
     private void populateChart()
@@ -116,11 +153,11 @@ public class HomeFragment extends Fragment {
         binding.rvActivities.setAdapter(adapter);
     }
 
-    private void getLastWeekProductivity(User userData)
+    private void getLastWeekProductivity(Score score)
     {
         barEntries.clear();
-        for(int i = 0;i < userData.lastWeekProductivity.size(); i++){
-            barEntries.add(new BarEntry(i+1, userData.lastWeekProductivity.get(i)));
+        for(int i = 0;i < score.scores.size(); i++){
+            barEntries.add(new BarEntry(i+1, score.scores.get(i)));
         }
         populateChart();
     }

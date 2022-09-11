@@ -26,9 +26,9 @@
                 android:layout_height="48dp"
                 android:id="@+id/author_image"
                 android:src="@drawable/user_avatar"
-                android:clickable="false"
                 android:scaleType="centerInside"
-                app:shapeAppearanceOverlay="@style/circleImageView"/>
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

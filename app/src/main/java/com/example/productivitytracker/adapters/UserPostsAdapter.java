@@ -25,9 +25,11 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
 
     private List<UserPost> userPosts;
     private OnItemClickListener listener;
+    private OnAuthorClickListener authorClickListener;
 
-    public UserPostsAdapter(List<UserPost> userPosts, OnItemClickListener listener){
+    public UserPostsAdapter(List<UserPost> userPosts, OnItemClickListener listener, OnAuthorClickListener authorClickListener){
         this.userPosts = userPosts;
+        this.authorClickListener = authorClickListener;
         this.listener = listener;
     }
 
@@ -40,6 +42,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
         private final TextView authorName;
         private final TextView commentsCount;
         private final TextView likesCount;
+        private int authorID;
         private int postID;
 
         public ViewHolder(@NonNull View itemView) {
@@ -52,12 +55,17 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
             commentsCount = itemView.findViewById(R.id.comments);
             likesCount = itemView.findViewById(R.id.likes);
 
+            authorImage.setOnClickListener(this);
+            authorName.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            listener.onClick(v, getAdapterPosition(), postID);
+            if(v.getId() != R.id.author_image && v.getId() != R.id.author_name)
+                listener.onClick(v, getAdapterPosition(), postID, authorID);
+            else
+                authorClickListener.onClick(v, getAdapterPosition(), postID, authorID);
         }
     }
 
@@ -70,7 +78,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String name = userPosts.get(position).user + "";
+        String name = userPosts.get(position).userName + "";
         String body = userPosts.get(position).body;
 
         Date date = new Date(Long.parseLong(userPosts.get(position).timestamp) * 1000);
@@ -86,7 +94,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
         holder.commentsCount.setText(commentCount + " comments");
         holder.likesCount.setText(likesCount + " likes");
         holder.postID = userPosts.get(position).postID;
-
+        holder.authorID = userPosts.get(position).user;
     }
 
     @Override
@@ -95,7 +103,11 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
     }
 
     public interface OnItemClickListener{
-        void onClick(View v, int position, int postID);
+        void onClick(View v, int position, int postID, int authorID);
+    }
+
+    public interface OnAuthorClickListener{
+        void onClick(View v, int position, int postID, int userID);
     }
 
 }

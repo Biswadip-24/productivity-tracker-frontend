@@ -55,5 +55,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-livedata:2.6.0-alpha01"
 
+    //google sign in
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
 }

@@ -30,6 +30,7 @@ public class RecommendationsActivity extends AppCompatActivity
 
         viewModel.fetchUserData(userID);
         viewModel.fetchTodayEvents(userID);
+        viewModel.fetchIdealData(userID);
 
         setListeners();
         //populateRecommendations();

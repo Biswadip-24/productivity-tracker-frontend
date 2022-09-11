@@ -10,7 +10,7 @@ public class User {
     public String lastName;
 
     public boolean isNewUser;
-    public List<Float> lastWeekProductivity;
     public List<String> post_likes;
     public List<Integer> badges;
 }
+

@@ -1,5 +1,6 @@
 package com.example.productivitytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ public class PostDetailsFragment extends Fragment
     UserViewModel viewModel;
     int userID;
     int postID;
+    int authorID;
     ArrayList<Integer> likedPosts = new ArrayList<>();
     boolean liked = false;
 
@@ -39,11 +41,12 @@ public class PostDetailsFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
-    public static PostDetailsFragment newInstance(int userID, int postID) {
+    public static PostDetailsFragment newInstance(int userID, int postID, int authorID) {
         PostDetailsFragment f = new PostDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("userID", userID);
         args.putInt("postID", postID);
+        args.putInt("authorID", authorID);
         f.setArguments(args);
         return f;
     }
@@ -57,9 +60,9 @@ public class PostDetailsFragment extends Fragment
         Bundle args = getArguments();
         userID = args.getInt("userID", 1);
         postID = args.getInt("postID",1);
+        authorID = args.getInt("authorID",1);
 
         fetchData();
-        //populateData();
         setListeners();
         return binding.getRoot();
     }
@@ -80,6 +83,24 @@ public class PostDetailsFragment extends Fragment
         binding.addCommentLayout.setEndIconOnClickListener(v -> {
             addComment();
             binding.addCommentLayout.getEditText().setText("");
+        });
+
+        binding.authorImage.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("userID", authorID);
+            b.putBoolean("viewer",true);
+            intent.putExtras(b);
+            startActivity(intent);
+        });
+
+        binding.authorName.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("userID", authorID);
+            b.putBoolean("viewer",true);
+            intent.putExtras(b);
+            startActivity(intent);
         });
 
         binding.likePost.setOnClickListener(v -> likeUnlikePost());
@@ -110,7 +131,7 @@ public class PostDetailsFragment extends Fragment
     }
 
     private void populatePost(UserPost post){
-        binding.authorName.setText(post.user + "");
+        binding.authorName.setText(post.userName);
         Date date = new Date(Long.parseLong(post.timestamp) * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d,yyyy h:mm a");
         String time = sdf.format(date);

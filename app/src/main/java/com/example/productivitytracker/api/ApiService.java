@@ -2,6 +2,8 @@ package com.example.productivitytracker.api;
 
 import com.example.productivitytracker.models.Comment;
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.IdealData;
+import com.example.productivitytracker.models.Score;
 import com.example.productivitytracker.models.User;
 import com.example.productivitytracker.models.UserPost;
 
@@ -11,7 +13,9 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -19,6 +23,27 @@ public interface ApiService {
 
     @GET("/api/user/{userID}/")
     Call<User> getUserDetails(@Path("userID") int userId);
+
+    @POST("/api/user/")
+    Call<User> addUser(@Body RequestBody params);
+
+    @PUT("/api/user/{userID}/")
+    Call<User> updateUserDetails(@Path("userID") int userId, @Body RequestBody params);
+
+    @GET("/api/user/{email}/")
+    Call<List<User>> getUserDetailsByEmail(@Path("email") String emailId);
+
+    @GET("/api/lastWeekProductivity/{userID}/")
+    Call<Score> getLastWeekProductivity(@Path("userID") int userId);
+
+    @POST("/api/idealData/")
+    Call<IdealData> postIdealData(@Body RequestBody params);
+
+    @PUT("/api/idealData/{id}/")
+    Call<IdealData> updateIdealData(@Path("id") int id, @Body RequestBody params);
+
+    @GET("/api/userIdealData/{userID}/")
+    Call<List<IdealData>> getIdealData(@Path("userID") int userId);
 
     @GET("/api/event/{userID}/{timeStamp}")
     Call<List<Event>> getEvents(@Path("userID") int userId, @Path("timeStamp") long timeStamp);

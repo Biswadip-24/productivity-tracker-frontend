@@ -111,6 +111,8 @@
                 android:textColor="@color/white"
                 android:textAlignment="center" />
 
+
+
             <EditText
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
@@ -118,12 +120,9 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#EFEFEF"
                 android:backgroundTintMode="src_in"
-                android:enabled="false"
-                android:clickable="false"
                 android:ems="10"
                 android:hint="@string/user_name"
                 android:importantForAutofill="no"
-                android:inputType="none"
                 android:textColor="@color/white"
                 android:textAlignment="center" />
 
@@ -143,6 +142,7 @@
 
             <EditText
                 android:id="@+id/age"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
@@ -152,160 +152,172 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal" />
 
-            <TextView
-                android:id="@+id/set_goals"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:height="40dp"
-                android:fontFamily="@font/poppins_bold"
+                android:id="@+id/user_goals"
                 android:gravity="center_horizontal"
-                android:text="@string/set_goals"
-                android:textColor="@color/white"
-                android:textSize="25sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
+                    android:id="@+id/set_goals"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="2"
-                    android:height="36dp"
+                    android:layout_marginTop="20dp"
+                    android:height="40dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:gravity="bottom"
-                    android:text="@string/sleep_hours"
-                    android:textSize="18sp" />
+                    android:gravity="center_horizontal"
+                    android:text="@string/set_goals"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
 
-                <Spinner
-                    android:id="@+id/hours_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="1"
-                    android:dropDownWidth="wrap_content"
-                    android:minHeight="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="textEnd"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <!--                    android:textAlignment="textEnd"-->
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="2"
+                        android:height="36dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="bottom"
+                        android:text="@string/sleep_hours"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/hours_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="1"
+                        android:dropDownWidth="wrap_content"
+                        android:minHeight="40dp"
+                        android:padding="5dp"
+                        android:textAlignment="textEnd"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <!--                    android:textAlignment="textEnd"-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/w_s_hours"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="2"
+                        android:height="36dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="bottom"
+                        android:text="@string/work_study_hours"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/hours_spinner2"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="1"
+                        android:dropDownWidth="wrap_content"
+                        android:minHeight="40dp"
+                        android:padding="5dp"
+                        android:textAlignment="textEnd"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/s_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="2"
+                        android:height="36dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="bottom"
+                        android:text="@string/screen_time"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/hours_spinner3"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="1"
+                        android:dropDownWidth="wrap_content"
+                        android:minHeight="40dp"
+                        android:padding="5dp"
+                        android:textAlignment="textEnd"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/workout_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="2"
+                        android:height="36dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="bottom"
+                        android:text="@string/workout_hours"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/hours_spinner4"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_weight="1"
+                        android:dropDownWidth="wrap_content"
+                        android:minHeight="40dp"
+                        android:padding="5dp"
+                        android:textAlignment="textEnd"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#2D9DF6"
+                    android:onClick="saveChanges"
+                    android:text="@string/save"
+                    android:textColor="#FFFFFF"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/log_out"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="#2D9DF6"
+                    android:text="@string/log_out"
+                    android:textColor="@color/white"
+                    tools:ignore="TextContrastCheck" />
+
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/w_s_hours"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="2"
-                    android:height="36dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="bottom"
-                    android:text="@string/work_study_hours"
-                    android:textSize="18sp" />
-
-                <Spinner
-                    android:id="@+id/hours_spinner2"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="1"
-                    android:dropDownWidth="wrap_content"
-                    android:minHeight="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="textEnd"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/s_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="2"
-                    android:height="36dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="bottom"
-                    android:text="@string/screen_time"
-                    android:textSize="18sp" />
-
-                <Spinner
-                    android:id="@+id/hours_spinner3"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="1"
-                    android:dropDownWidth="wrap_content"
-                    android:minHeight="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="textEnd"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/workout_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="2"
-                    android:height="36dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="bottom"
-                    android:text="@string/workout_hours"
-                    android:textSize="18sp" />
-
-                <Spinner
-                    android:id="@+id/hours_spinner4"
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="1"
-                    android:dropDownWidth="wrap_content"
-                    android:minHeight="40dp"
-                    android:padding="5dp"
-                    android:textAlignment="textEnd"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/save_button"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#2D9DF6"
-                android:onClick="saveChanges"
-                android:text="@string/save"
-                android:textColor="#FFFFFF"
-                tools:ignore="TextContrastCheck" />
-
-            <Button
-                android:id="@+id/log_out"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="#2D9DF6"
-                android:text="@string/log_out"
-                android:textColor="@color/white"
-                tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
