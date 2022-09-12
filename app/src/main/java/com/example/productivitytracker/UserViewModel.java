@@ -280,7 +280,7 @@ public class UserViewModel extends ViewModel
 
     public void postIdealData(int user, int sleep_time, int work_hours, int screen_time, int workout_hours){
         Map<String, Object> jsonParams = new ArrayMap<>();
-        jsonParams.put("user", user);
+        jsonParams.put("userID", user);
         jsonParams.put("sleep_time", sleep_time);
         jsonParams.put("work_hours", work_hours);
         jsonParams.put("screen_time", screen_time);
@@ -301,7 +301,7 @@ public class UserViewModel extends ViewModel
 
     public void updateIdealData(int user, int sleep_time, int work_hours, int screen_time, int workout_hours, int id){
         Map<String, Object> jsonParams = new ArrayMap<>();
-        jsonParams.put("user", user);
+        jsonParams.put("userID", user);
         jsonParams.put("sleep_time", sleep_time);
         jsonParams.put("work_hours", work_hours);
         jsonParams.put("screen_time", screen_time);
@@ -380,9 +380,9 @@ public class UserViewModel extends ViewModel
         if(userIdealData.getValue() != null && !userIdealData.getValue().isEmpty()){
             sleepTime = userIdealData.getValue().get(userIdealData.getValue().size() - 1).sleep_time;
         }
-        int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - sleepTime;
+        int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if(hours < sleepTime) productivityScore.setValue(1.0f);
-        else productivityScore.setValue(productiveHours.getValue() / (float)hours);
+        else productivityScore.setValue(productiveHours.getValue() / ((float)hours - sleepTime));
 
     }
 

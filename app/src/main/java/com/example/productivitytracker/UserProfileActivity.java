@@ -136,7 +136,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setUserIdealData(List<IdealData> data){
-        if(data.isEmpty()) {
+        if(data!= null && data.isEmpty()) {
             newUser = true;
             for(int i=0;i<hoursSpinner.length;i++) {
                 hoursSpinner[0].setSelection(0);

@@ -51,10 +51,10 @@ public interface ApiService {
     @POST("/api/event/")
     Call<Event> addEvent(@Body RequestBody params);
 
-    @GET("/api/post/")
+    @GET("/api/getPost/")
     Call<List<UserPost>> getALlPosts();
 
-    @GET("/api/post/{postID}")
+    @GET("/api/getPost/{postID}")
     Call<UserPost> getPost(@Path("postID") int postID);
 
     @GET("/api/postComments/{postID}/")
