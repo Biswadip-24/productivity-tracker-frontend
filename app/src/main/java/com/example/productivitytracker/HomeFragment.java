@@ -1,5 +1,7 @@
 package com.example.productivitytracker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,10 +12,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.productivitytracker.adapters.ActivityListAdapter;
 import com.example.productivitytracker.databinding.FragmentHomeBinding;
@@ -57,6 +61,14 @@ public class HomeFragment extends Fragment {
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
+    private String first_name;
+    private String last_name;
+    private String user_name;
+    private String sleep_time;
+    private String work_time;
+    private String work_out_time;
+    private String screen_time;
+
     public static HomeFragment newInstance(String emailId) {
         HomeFragment f = new HomeFragment();
         Bundle args = new Bundle();
@@ -89,20 +101,21 @@ public class HomeFragment extends Fragment {
         gsc = GoogleSignIn.getClient(requireActivity(), gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireActivity());
         if(account != null){
-            firstName = account.getDisplayName().substring(0, account.getDisplayName().indexOf(' '));
-            lastName = account.getDisplayName().substring(account.getDisplayName().indexOf(' ') + 1);
+            if(account.getDisplayName().contains(" ")){
+                firstName = account.getDisplayName().substring(0, account.getDisplayName().indexOf(' '));
+                lastName = account.getDisplayName().substring(account.getDisplayName().indexOf(' ') + 1);
+            }
+            else{
+                firstName = account.getDisplayName();
+                lastName = "";
+            }
         }
 
         viewModel = new ViewModelProvider(getActivity()).get(UserViewModel.class);
-        //fetchData();
-
         setListeners();
         return binding.getRoot();
     }
 
-    private void fetchData(){
-        viewModel.fetchUserDataByEmail(emailId);
-    }
 
     private void setListeners(){
         binding.userIcon.setOnClickListener(v -> openProfileActivity());
@@ -124,8 +137,10 @@ public class HomeFragment extends Fragment {
         viewModel.fetchLastWeekProductivity(userID);
     }
 
-    private void createUser(Boolean userExists){
+    private void createUser(Boolean userExists)
+    {
         if(!userExists){
+            openDialog();
             viewModel.createUser(emailId, firstName,lastName, firstName + " " + lastName);
         }
     }
@@ -138,6 +153,44 @@ public class HomeFragment extends Fragment {
         barChart.setData(barData);
         styleBarChart();
         barChart.invalidate();
+    }
+
+    private void openDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Enter your details");
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_dialog, (ViewGroup) getView(), false);
+        final EditText _firstName = view.findViewById(R.id.firstname);
+        final EditText _lastName = view.findViewById(R.id.lastname);
+        final EditText _userName = view.findViewById(R.id.user_name);
+        final EditText _sleepTime = view.findViewById(R.id.sleep_hours);
+        final EditText _workHours = view.findViewById(R.id.work_hours);
+        final EditText _workoutHours = view.findViewById(R.id.workout_time);
+        final EditText _screenHours = view.findViewById(R.id.screen_time);
+        builder.setView(view);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                first_name = _firstName.getText().toString();
+                last_name = _lastName.getText().toString();
+                user_name = _userName.getText().toString();
+                screen_time = _screenHours.getText().toString();
+                sleep_time = _sleepTime.getText().toString();
+                work_out_time = _workoutHours.getText().toString();
+                work_time = _workHours.getText().toString();
+
+                viewModel.postIdealData(userID,
+                        Integer.parseInt(sleep_time),
+                        Integer.parseInt(work_time),
+                        Integer.parseInt(screen_time),
+                        Integer.parseInt(work_out_time));
+                viewModel.updateUserDetails(userID,user_name,first_name,last_name,emailId);
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     private void setProductHours(float productHours){
