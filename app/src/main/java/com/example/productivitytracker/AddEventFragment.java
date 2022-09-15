@@ -34,6 +34,7 @@ public class AddEventFragment extends BottomSheetDialogFragment {
     TextInputLayout startTime;
     TextInputLayout endTime;
     long startT, endT;
+    long delay = 86400;
 
     String[] eventType = {"Study", "Entertainment", "Gym", "Others"};
     private int userID = -1;
@@ -93,7 +94,9 @@ public class AddEventFragment extends BottomSheetDialogFragment {
         users.add(userID);
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = df.format(Calendar.getInstance().getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -(int)(delay/86400));
+        String formattedDate = df.format(cal.getTime());
 
         String type = binding.eventSpinner.getSelectedItem().toString();
 
@@ -103,7 +106,7 @@ public class AddEventFragment extends BottomSheetDialogFragment {
         map.put("date", formattedDate);
         map.put("start_time",startT);
         map.put("end_time",endT);
-        map.put("users", users);
+        map.put("userID", userID);
         map.put("type",type);
 
         viewModel.addEvent(map, userID);
@@ -123,8 +126,8 @@ public class AddEventFragment extends BottomSheetDialogFragment {
             calendar.set(Calendar.MINUTE, minute1);
 
             long timeStamp = calendar.getTimeInMillis() / 1000;
-            if(type == 1) startT = timeStamp;
-            else endT = timeStamp;
+            if(type == 1) startT = timeStamp - delay;
+            else endT = timeStamp - delay;
 
             int hour1 = calendar.get(Calendar.HOUR);
             if(hour1 == 0) hour1 = 12;

@@ -10,6 +10,7 @@ import com.example.productivitytracker.api.ApiClient;
 import com.example.productivitytracker.api.ApiService;
 import com.example.productivitytracker.models.Comment;
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.Events;
 import com.example.productivitytracker.models.IdealData;
 import com.example.productivitytracker.models.Score;
 import com.example.productivitytracker.models.User;
@@ -145,10 +146,11 @@ public class UserViewModel extends ViewModel
 
     public void fetchTodayEvents(int userID)
     {
-        ApiClient.getInstance().getApiService().getEvents(userID, System.currentTimeMillis()/1000).enqueue(new Callback<List<Event>>() {
+        ApiClient.getInstance().getApiService().getEvents(userID, (System.currentTimeMillis()/1000) - 86400).enqueue(new Callback<Events>() {
             @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                todayEvents.setValue(response.body());
+            public void onResponse(Call<Events> call, Response<Events> response) {
+                assert response.body() != null;
+                todayEvents.setValue(response.body().events);
                 fetchIdealData(userID);
                 calculateProductiveHours(userID);
                 calculateTypes();
@@ -156,20 +158,21 @@ public class UserViewModel extends ViewModel
             }
 
             @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                Log.e(TAG, "Error getting Today's Events");
+            public void onFailure(Call<Events> call, Throwable t) {
+                Log.e(TAG, "Error getting Today's Events " + t.getLocalizedMessage());
             }
         });
     }
 
     public void fetchEvents(int userID, long timeStamp){
-        ApiClient.getInstance().getApiService().getEvents(userID, timeStamp).enqueue(new Callback<List<Event>>() {
+        ApiClient.getInstance().getApiService().getEvents(userID, timeStamp).enqueue(new Callback<Events>() {
             @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                events.setValue(response.body());
+            public void onResponse(Call<Events> call, Response<Events> response) {
+                assert response.body() != null;
+                events.setValue(response.body().events);
             }
             @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
+            public void onFailure(Call<Events> call, Throwable t) {
                 Log.e(TAG, "Error getting Events");
             }
         });

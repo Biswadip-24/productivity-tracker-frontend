@@ -10,5 +10,6 @@ public class Event {
     public long end_time;
     public String date;
     public String type;
-    public List<Integer> users;
+    public Integer users;
 }
+

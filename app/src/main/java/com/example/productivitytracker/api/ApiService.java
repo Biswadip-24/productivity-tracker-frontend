@@ -1,7 +1,10 @@
 package com.example.productivitytracker.api;
 
+import android.provider.CalendarContract;
+
 import com.example.productivitytracker.models.Comment;
 import com.example.productivitytracker.models.Event;
+import com.example.productivitytracker.models.Events;
 import com.example.productivitytracker.models.IdealData;
 import com.example.productivitytracker.models.Score;
 import com.example.productivitytracker.models.User;
@@ -45,10 +48,10 @@ public interface ApiService {
     @GET("/api/userIdealData/{userID}/")
     Call<List<IdealData>> getIdealData(@Path("userID") int userId);
 
-    @GET("/api/event/{userID}/{timeStamp}")
-    Call<List<Event>> getEvents(@Path("userID") int userId, @Path("timeStamp") long timeStamp);
+    @GET("/api/event/{userID}/{timeStamp}/")
+    Call<Events> getEvents(@Path("userID") int userId, @Path("timeStamp") long timeStamp);
 
-    @POST("/api/event/")
+    @POST("/api/addEvent/")
     Call<Event> addEvent(@Body RequestBody params);
 
     @GET("/api/getPost/")
